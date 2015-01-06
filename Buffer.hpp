@@ -31,9 +31,9 @@ public:
     int getHeight() const;
     size_t getSize() const;
 private:
-    void * data_;
-    unsigned int width_, height_;
-    size_t size_;
+    void * data_ = nullptr;
+    unsigned int width_ = 0, height_ = 0;
+    size_t size_ = 0;
 };
 
 #endif

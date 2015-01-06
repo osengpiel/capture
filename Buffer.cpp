@@ -1,9 +1,9 @@
 #include "Buffer.hpp"
 
-Buffer::Buffer() : data_(0), size_(0), width_(0), height_(0) { }
+Buffer::Buffer() { }
 
 Buffer::Buffer(void * data,unsigned int width, unsigned int height, size_t size)
-    :data_(data), size_(size), width_(width), height_(height)
+    :data_(data), width_(width), height_(height), size_(size)
 {
 
 }
@@ -19,6 +19,11 @@ Buffer::Buffer(Buffer&& other)
     width_ = other.width_;
     height_ = other.height_;
     size_ = other.size_;
+
+    other.data_ = nullptr;
+    other.width_ = 0;
+    other.height_ = 0;
+    other.size_ = 0;
 }
 
 Buffer & Buffer::operator=(Buffer&& other)
@@ -27,6 +32,13 @@ Buffer & Buffer::operator=(Buffer&& other)
     width_ = other.width_;
     height_ = other.height_;
     size_ = other.size_;
+
+    other.data_ = nullptr;
+    other.width_ = 0;
+    other.height_ = 0;
+    other.size_ = 0;
+
+    return *this;
 }	
 
 void * Buffer::getData() const
