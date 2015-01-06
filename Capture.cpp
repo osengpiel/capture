@@ -46,7 +46,7 @@ Capture::Capture(const char * device, unsigned int width, unsigned int height,
 	throw CaptureException("Buffer request failed.");
 
     // Create the image buffer
-    for(int i = 0; i < request.count; i++)
+    for(unsigned int i = 0; i < request.count; i++)
     {
 	v4l2_buffer buf = { };
 	buf.index = i;
@@ -64,7 +64,7 @@ Capture::Capture(const char * device, unsigned int width, unsigned int height,
 	buffer_.emplace_back(start, width_, height_, buf.length);
     }
 
-    for(int i = 0 ; i < buffer_.size() ; i++)
+    for(unsigned int i = 0 ; i < buffer_.size() ; i++)
     {
 	v4l2_buffer buf = { };
 	buf.index = i;

@@ -9,6 +9,7 @@
 #include <assert.h>
 
 #include <exception>
+#include <string>
 
 //! This is the general exception for ioctl errors occuring in the Capture.
 /**
