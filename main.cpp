@@ -12,7 +12,7 @@ struct yuyv
 
 int main()
 {
-    Capture cap("/dev/video0", 640, 480, "YUYV", 15);
+    Capture cap("/dev/video0", 640, 480, "YUYV", 20);
 
     std::cout << cap.getController().getContrast() << std::endl;
 
@@ -25,15 +25,14 @@ int main()
 
     img.create(640,480,sf::Color::Black);
 
-    Image frame;
+    decltype(cap.getFrame()) frame;
     bool gotFrame = false;
 
     while(!gotFrame)
     {
 	try
 	{
-	    frame = cap.getFrame();
-	    std::cout << frame.getData() << std::endl;
+	    frame = std::move(cap.getFrame());
 	    std::cout << "Got the Frame" << std::endl;
 	    gotFrame = true;
 	}
@@ -84,20 +83,20 @@ int main()
 
 	try
 	{
-	    cap.getFrame();
+	    frame = cap.getFrame();
 	}
 	catch(...)
 	{
 
 	}
 
-	if(frame.getData())
+	if(frame)
 	{
-	    for(int i = 0; i < 480; i++)
-		for(int j = 0; j < 640 ; j++)
+	    for(unsigned int i = 0; i < 480; i++)
+		for(unsigned int j = 0; j < 640 ; j++)
 		{
-		    auto tmp = ((yuyv*) (frame.getData()))[i*640+j];
-		    img.setPixel(j,i,sf::Color(tmp.y,tmp.y,tmp.y,255));
+		    auto tmp = frame->getPixel(i,j);
+		    img.setPixel(j,i,sf::Color(tmp.r,tmp.g,tmp.b,255));
 		}
 	    texture.loadFromImage(img);
 	    sprite.setTexture(texture);

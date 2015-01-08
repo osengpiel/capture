@@ -11,11 +11,13 @@
 #include <string>
 #include <vector>
 #include <exception>
+#include <memory>
 
 #include "Buffer.hpp"
 #include "Controller.hpp"
 
 #include "Image.hpp"
+#include "YUYVImage.hpp"
 
 
 //! This exception is thrown, when none of the buffers provides an image.
@@ -49,7 +51,7 @@ public:
     Capture(const char * device, unsigned int width, unsigned int height , const
 	    std::string & fourcc, unsigned int bufferNr = 3);
     ~Capture();
-    Image getFrame();
+    std::unique_ptr<Image> getFrame();
     Controller getController();
 private:
     int fd_;

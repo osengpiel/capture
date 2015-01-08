@@ -27,21 +27,31 @@ private:
     std::string message_;
 };
 
+struct Pixel
+{
+    __u8 r,g,b = 0;
+};
+
 class Image
 {
 public:
     Image();
-    Image(int fd, v4l2_buffer buf, void * data);
+    Image(int fd, v4l2_buffer buf, void * data, unsigned int width, 
+	    unsigned int height);
     Image(Image && img);
     ~Image();
 
     Image & operator=(Image && img);
     
-    void * getData();
-private:
+    virtual Pixel getPixel(unsigned int x, unsigned int y) = 0;
+    virtual void  setPixel(unsigned int x, unsigned int y, Pixel value) = 0;
+protected:
     void * data_ = nullptr;
     int fd_ = 0;
     v4l2_buffer buf_ = { };
+
+    unsigned int width_ = 0;
+    unsigned int height_ = 0;
 };
 
 #endif

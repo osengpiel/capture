@@ -97,7 +97,7 @@ Capture::~Capture()
     close(fd_);
 }
 
-Image Capture::getFrame()
+std::unique_ptr<Image> Capture::getFrame()
 {
     // Get a frame
     v4l2_buffer buf = { };
@@ -107,7 +107,8 @@ Image Capture::getFrame()
     if(ioctl(fd_, VIDIOC_DQBUF, &buf) == -1)
 	throw NoFrameException();
 
-    return Image(fd_,buf,buffer_[buf.index].getData());
+    return std::unique_ptr<Image>(new YUYVImage(fd_,buf,
+		buffer_[buf.index].getData(), width_,height_));
 }
 
 Controller Capture::getController()
