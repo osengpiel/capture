@@ -12,7 +12,7 @@ struct yuyv
 
 int main()
 {
-    Capture cap("/dev/video0", 640, 480, "YUYV", 20);
+    Capture cap("/dev/video0", 640, 480, "YUYV", 3);
 
     std::cout << cap.getController().getContrast() << std::endl;
 
@@ -41,9 +41,7 @@ int main()
 	    std::cout << "No Frame available" << std::endl;
 	}
     }
-    
-    sf::Clock clock;
-    long timeperiod = 0;
+
     while (window.isOpen())
     {
 	sf::Event event;
@@ -81,14 +79,7 @@ int main()
 	}
 	*/
 
-	try
-	{
-	    frame = cap.getFrame();
-	}
-	catch(...)
-	{
 
-	}
 
 	if(frame)
 	{
@@ -98,18 +89,31 @@ int main()
 		    auto tmp = frame->getPixel(i,j);
 		    img.setPixel(j,i,sf::Color(tmp.r,tmp.g,tmp.b,255));
 		}
-	    texture.loadFromImage(img);
-	    sprite.setTexture(texture);
 
-	    window.clear();
-	    window.draw(sprite);
-	    window.display();
+		texture.loadFromImage(img);
+		sprite.setTexture(texture);
+		
+		window.clear();
+		window.draw(sprite);
+		window.display();
 	}
 	else
 	{
 	    window.clear();
 	    window.display();
 	}
+
+	frame.reset();
+
+	try
+	{
+	    frame = cap.getFrame();
+	}
+	catch(...)
+	{
+
+	}
+
     }
 
     return 0;
